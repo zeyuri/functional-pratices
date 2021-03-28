@@ -1,0 +1,1 @@
+## This is is a repo of exercicies on functional programming and javascript.

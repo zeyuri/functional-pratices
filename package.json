@@ -1,0 +1,15 @@
+{
+  "name": "functional-pratices",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:zeyuri/functional-pratices.git",
+  "author": "Zé Yuri <jozeyuri@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "jest": "^26.6.3"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
