@@ -1,3 +1,5 @@
+//source: https://codepen.io/drboolean/pen/poodxOm?editors=0010
+
 const Box = (x) => ({
   map: (f) => Box(f(x)),
   fold: (f) => f(x),
@@ -11,27 +13,37 @@ const Box = (x) => ({
 
 // Ex1: Using Box, refactor moneyToFloat to be unnested.
 // =========================
-export const moneyToFloat = (str) => parseFloat(str.replace(/\$/, ""))
+const moneyToFloat = (str) =>
+  Box(str)
+    .map((str) => str.replace(/\$/, ""))
+    .fold(parseFloat)
 
 // Ex2: Using Box, refactor percentToFloat to remove assignment
 // =========================
-const percentToFloat = (str) => {
-  const float = parseFloat(str.replace(/\%/, ""))
-  return float * 0.01
-}
-
-QUnit.test("Ex2: percentToFloat", (assert) => {
-  assert.equal(String(percentToFloat("20%")), 0.2)
-})
+const percentToFloat = (str) =>
+  Box(str.replace(/\%/, ""))
+    .map(parseFloat)
+    .fold((float) => float * 0.01)
 
 // Ex3: Using Box, refactor applyDiscount (hint: each variable introduces a new Box)
 // =========================
-const applyDiscount = (price, discount) => {
+const applyDiscount_ = (price, discount) => {
   const cents = moneyToFloat(price)
   const savings = percentToFloat(discount)
   return cents - cents * savings
 }
 
-QUnit.test("Ex3: Apply discount", (assert) => {
-  assert.equal(String(applyDiscount("$5.00", "20%")), 4)
-})
+const applyDiscount = (price, discount) =>
+  Box(price)
+    .map(moneyToFloat)
+    .fold((cents) =>
+      Box(discount)
+        .map(percentToFloat)
+        .fold((savings) => cents - cents * savings)
+    )
+
+module.exports = {
+  moneyToFloat,
+  percentToFloat,
+  applyDiscount,
+}
